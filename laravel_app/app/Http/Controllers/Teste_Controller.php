@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
+
+use function Laravel\Prompts\error;
 
 class Teste_Controller extends Controller
 {
@@ -16,6 +19,18 @@ class Teste_Controller extends Controller
         return '<h1>TESTE PAGE</h1>';
     }
 
+    public function condition(){
+        $header = 'this is a header';
+        $counter = 4;
+        if ($counter > 3) {
+            return view('condition', ['header' => $header]);
+        }
+
+        else {
+            throw new \Exception("O contador é menor ou igual a 3.");
+            
+        }
+    }
 
     // imaginemos que carregamos dados do banco
 }
