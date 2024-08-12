@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\Data;
+use App\Http\Controllers\DataController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Teste_Controller;
+use App\Http\Controllers\exercicio_laravel;
+use Illuminate\Support\Facades\App;
+use App\Http\Controllers\LanguageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,22 +20,79 @@ use App\Http\Controllers\Teste_Controller;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('homepage');
 });
 
 
-Route::get('/hello', [Teste_Controller::class, "homepage"]);
+Route::get('changeLanguage/{locale}', [LanguageController::class, 'changeLanguage'])->name('changeLanguage');
+
+
+
+//a gente manda pra cá:
+
+Route::post('/process-data',[DataController::class, 'display_data'])->name('display_data');
 
 
 
 
-
-Route::get('/teste', function(){
-    return view('teste');
-});
-
-
-
-Route::get('/condition', [Teste_Controller::class, "condition"]);
+// a gente recebe de cá:
+Route::post('/condition', function () {
+    return view('condition'); // Substitua 'condition' pelo nome da sua view
+})->name('condition');
 
 //para atribuir uma rota em web.php para um método de algum controller, basta chamar a classe route e o método get passando como parametros a rota que voce deseja, a chamada da classe do controller com o ::class e colocar o nome do método entre aspas duplas.
+
+
+
+
+
+
+
+
+
+
+
+Route::get('/aboutpage', [exercicio_laravel::class, "aboutpage"]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Route::get('/nome_rota', function(){
+    return view('welcome');
+});

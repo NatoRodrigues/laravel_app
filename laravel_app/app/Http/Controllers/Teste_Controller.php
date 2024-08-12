@@ -19,6 +19,10 @@ class Teste_Controller extends Controller
         return '<h1>TESTE PAGE</h1>';
     }
 
+    public function single_post(){
+        return view('single-post');
+    }
+
     public function condition(){
         $header = 'this is a header';
         $counter = 4;

@@ -7,12 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>click on the link do return to helloworld screen:</h1>
-    <p><form action="">
-        <input type="text" id="name" name="name">    
-    </form></p>
-    <br>
-    <br>
-    <a href="hello">CLICK HERE!</a>
+    
 </body>
 </html>
