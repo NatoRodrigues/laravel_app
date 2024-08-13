@@ -7,20 +7,20 @@ use Illuminate\Http\Request;
 
 class DataController extends Controller
 {
-    public function display_data(Request $request)
+    public function display_data(Request $request)  
     {
-        $validate_Data = $request->validate([
-            'username' =>  'required|string|max:255',
-            'email' => 'required|email|max:255',
-        ]);
-        if ($validate_Data) {
-            User::create($validate_Data);
+    $validatedData = $request->validate([
+        'username' => 'required|string|max:255',
+        'email' => 'required|string|max:255',
+        'password' => 'required|string|min:6',
+        'password_confirmation' => 'required|same:password',
+    ]);
 
-            return response()->json(['success' => 'Form submitted successfully'.$validate_Data]);
-        }
+    if ($validatedData) {
+        return response()->json(['message' => 'Dados inseridos com sucesso!', 'username' => $validatedData['username']]);
 
-        return response()->json(['error' => 'Form não foi enviado']);
-       
     }
     
+    }
+   
 }

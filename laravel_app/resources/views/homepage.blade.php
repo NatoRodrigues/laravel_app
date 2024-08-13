@@ -1,20 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- CSRF Token Meta Tag -->
-    <title>Document</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> <!-- jQuery -->
-</head>
 <body>
     <x-layout>
         <div class="container py-md-5">
-            <a href="{{ route('changeLanguage', ['locale' => 'en']) }}">English</a>
-            <a href="{{ route('changeLanguage', ['locale' => 'pt']) }}">Português</a>
-            
-            
            
             <div class="row align-items-center">
                 <div class="col-lg-7 py-3 py-md-5">
@@ -54,38 +40,33 @@
         </div>
     </x-layout>
     <script>
-        jQuery(document).ready(function($) {
-            console.log("Document ready!");
-            $('#registration-form').submit(function(event) {
-                event.preventDefault();  // Prevents the default form submission
-                console.log("Form submit intercepted.");
-                var formData = $(this).serialize(); // Serializes the form data
-                console.log("Form data serialized: ", formData);
+    jQuery(document).ready(function() {
+        console.log("jQuery está pronto e funcionando!");
 
-                $.ajax({
-                    type: "POST",
-                    url: '{{ route('display_data') }}',
-                    dataType: 'json',
-                    data: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        console.log("AJAX request successful: ", response);
-                        if (response.dataProcessed) {
-                            window.location.href = '{{ route('condition') }}';
-                            console.log(response.username);
-                        } else {
-                            alert('Error: ' + response.message);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.log("AJAX request failed: ", status, error);
-                        alert('Erro na requisição: ' + error);
-                    }
-                });
-            });
-        });
+        $('#registration-form').submit(function(event) {
+    event.preventDefault(); // Previne o envio padrão do formulário
+    var formData = $(this).serialize(); // Serializa os dados do formulário
+
+    $.ajax({
+        type: "POST",
+        url: '{{ route('display_data') }}', // A rota que irá processar os dados
+        dataType: 'json',
+        data: formData,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Inclui o token CSRF
+        },
+        success: function(response) {
+            console.log("Requisição AJAX bem-sucedida: ", response);
+                alert(response.message); // Acesse dados retornados
+        },
+        error: function(xhr, status, error) {
+            console.log("Requisição AJAX falhou: ", status, error);
+            alert('Erro na requisição: ' + error);
+        }
+    });
+});
+
+    });
     </script>
 </body>
 </html>
