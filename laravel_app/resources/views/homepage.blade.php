@@ -15,8 +15,19 @@
                       @csrf <!-- CSRF token -->
                         <div class="form-group">
                             <label for="username-register" class="text-muted mb-1"><small>Username</small></label>
-                            <input name="username" id="username-register" class="form-control" type="text" placeholder="Pick a username" autocomplete="off" />
-                        </div>
+                            
+                          {{-- 
+                                {{ old('username') }} <- recupera o valor antigo do campo passando o name do input 
+                            --}}
+
+                            <input value="{{old('username')}}" name="username" id="username-register" class="form-control" type="text" placeholder="Pick a username" autocomplete="off" />
+                              
+                          {{-- 
+                            //ativa mensagem de erro automatica ao submitar o form (obs: não se aplica com ajax. é preciso passar a rota no action e protegê-la com a diretiva @csrf)
+                            --}}
+                            @error('username')
+                                <p class="m-0 small alert alert-danger shadow-sm">{{ $message }}</p>
+                            @enderror
   
                         <div class="form-group">
                             <label for="email-register" class="text-muted mb-1"><small>Email</small></label>
@@ -40,33 +51,48 @@
         </div>
     </x-layout>
     <script>
-    jQuery(document).ready(function() {
-        console.log("jQuery está pronto e funcionando!");
-
-        $('#registration-form').submit(function(event) {
-    event.preventDefault(); // Previne o envio padrão do formulário
-    var formData = $(this).serialize(); // Serializa os dados do formulário
+    $('#registration-form').submit(function(event) {
+    event.preventDefault();
+    var formData = $(this).serialize(); 
 
     $.ajax({
         type: "POST",
-        url: '{{ route('display_data') }}', // A rota que irá processar os dados
+        url: '{{ route('display_data') }}', 
         dataType: 'json',
         data: formData,
         headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Inclui o token CSRF
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')  
         },
         success: function(response) {
             console.log("Requisição AJAX bem-sucedida: ", response);
-                alert(response.message); // Acesse dados retornados
+            alert(response.message);  
         },
         error: function(xhr, status, error) {
             console.log("Requisição AJAX falhou: ", status, error);
-            alert('Erro na requisição: ' + error);
+
+            if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                var validationErrors = xhr.responseJSON.errors;
+                var errorMessage = "Erro de validação:\n";
+                console.log('validationErrors:', JSON.stringify(validationErrors, null, 2));
+
+                for (var field in validationErrors) {
+                    if (validationErrors.hasOwnProperty(field)) {
+                        console.log('validationErrors :' + validationErrors);
+                        console.log('errorMessage:' + errorMessage);
+                        console.log(validationErrors[field]);
+                        errorMessage += field + ": " + validationErrors[field].join(", ") + "\n";
+
+                        console.log('error message pós loop for:'+ errorMessage);
+                    }
+                }
+
+                alert(errorMessage);
+            } else {
+                alert('Erro na requisição: ' + (xhr.responseJSON ? xhr.responseJSON.message : error));
+            }
         }
     });
 });
-
-    });
     </script>
 </body>
 </html>
