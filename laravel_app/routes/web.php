@@ -19,16 +19,15 @@ use App\Http\Controllers\LanguageController;
 |
 */
 
-Route::get('/', function () {
-    return view('homepage');
-});
-
+Route::get('/', [DataController::class, "ShowCorrectHomePage"]);
 
  
 
 //a gente manda pra cá:
 
 Route::post('/process-data',[DataController::class, 'display_data'])->name('display_data');
+
+Route::post('/login',[DataController::class, 'login'])->name('login');
 
 
 
