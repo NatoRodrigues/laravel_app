@@ -25,11 +25,11 @@ Route::get('/', [DataController::class, "ShowCorrectHomePage"]);
 
 //a gente manda pra cá:
 
-Route::post('/process-data',[DataController::class, 'display_data'])->name('display_data');
+Route::post('/process-data',[DataController::class, 'register'])->name('register');
 
 Route::post('/login',[DataController::class, 'login'])->name('login');
 
-
+Route::post('/logout', [DataController::class, 'logout'])->name('logout');
 
 
 // a gente recebe de cá:

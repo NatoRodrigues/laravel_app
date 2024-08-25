@@ -11,7 +11,7 @@
                     <p class="lead text-muted">Are you sick of short tweets and impersonal &ldquo;shared&rdquo; posts that are reminiscent of the late 90&rsquo;s email forwards? We believe getting back to actually writing is the key to enjoying the internet again.</p>
                 </div>
                 <div class="col-lg-5 pl-lg-5 pb-3 py-lg-5">
-                    <form id="registration-form" method="POST">
+                    <form id="registration-form" action="/process-data" method="POST">
                       @csrf <!-- CSRF token -->
                         <div class="form-group">
                             <label for="username-register" class="text-muted mb-1"><small>Username</small></label>
@@ -31,12 +31,20 @@
   
                         <div class="form-group">
                             <label for="email-register" class="text-muted mb-1"><small>Email</small></label>
-                            <input name="email" id="email-register" class="form-control" type="text" placeholder="you@example.com" autocomplete="off" />
+                            <input value="{{ old('email') }}" name="email" id="email-register" class="form-control" type="text" placeholder="you@example.com" autocomplete="off" />
+
+                            @error('email')
+                                <p class="m-0 small alert alert-danger shadow-sm">{{ $message }}</p>
+                            @enderror {{-- busca mensagem de erro referente a validação do campo de E-MAIL --}}
+
                         </div>
   
                         <div class="form-group">
                             <label for="password-register" class="text-muted mb-1"><small>Password</small></label>
                             <input name="password" id="password-register" class="form-control" type="password" placeholder="Create a password" />
+                            @error('password')
+                                <p class="m-0 small alert alert-danger shadow-sm">{{ $message }}</p>
+                            @enderror
                         </div>
   
                         <div class="form-group">
@@ -51,48 +59,7 @@
         </div>
     </x-layout>
     <script>
-    $('#registration-form').submit(function(event) {
-    event.preventDefault();
-    var formData = $(this).serialize(); 
 
-    $.ajax({
-        type: "POST",
-        url: '{{ route('display_data') }}', 
-        dataType: 'json',
-        data: formData,
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')  
-        },
-        success: function(response) {
-            console.log("Requisição AJAX bem-sucedida: ", response);
-            alert(response.message);  
-        },
-        error: function(xhr, status, error) {
-            console.log("Requisição AJAX falhou: ", status, error);
-
-            if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
-                var validationErrors = xhr.responseJSON.errors;
-                var errorMessage = "Erro de validação:\n";
-                console.log('validationErrors:', JSON.stringify(validationErrors, null, 2));
-
-                for (var field in validationErrors) {
-                    if (validationErrors.hasOwnProperty(field)) {
-                        console.log('validationErrors :' + validationErrors);
-                        console.log('errorMessage:' + errorMessage);
-                        console.log(validationErrors[field]);
-                        errorMessage += field + ": " + validationErrors[field].join(", ") + "\n";
-
-                        console.log('error message pós loop for:'+ errorMessage);
-                    }
-                }
-
-                alert(errorMessage);
-            } else {
-                alert('Erro na requisição: ' + (xhr.responseJSON ? xhr.responseJSON.message : error));
-            }
-        }
-    });
-});
     </script>
 </body>
 </html>

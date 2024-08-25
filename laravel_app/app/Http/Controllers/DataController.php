@@ -12,6 +12,11 @@ use App\Http\Controllers\Controller;
 class DataController extends Controller
 {
 
+    public function logout(){
+        auth()->logout();
+        return redirect('/')->with('success', 'You are now Logged out.');
+    }
+
     public function ShowCorrectHomePage(){
         if (auth()->check()) { //  vai checar se o user tá logado. retornará true ou false
             return view('homepage-feed');
@@ -20,7 +25,7 @@ class DataController extends Controller
         }
         
     }
-    public function display_data(Request $request)  
+    public function register(Request $request)  
     {
     $validatedData = $request->validate([
         'username' => ['required', 'string', 'min:3','max:240', Rule::unique('users', 'username')],
@@ -32,9 +37,9 @@ class DataController extends Controller
     $validatedData['password'] = bcrypt($validatedData['password']);
 
     try {
-        User::create($validatedData);
-         
-        return response()->json(['message' => 'Dados inseridos com sucesso']);
+        $user = User::create($validatedData);
+        auth()->login($user);
+        return redirect('/')->with('success', 'Registro feito com sucesso.');
         
     } catch (Exception $exception) {
         return response()->json(['error' => $exception->getMessage()], 422);
@@ -52,13 +57,12 @@ class DataController extends Controller
             ['username' => $validatedData['loginusername'],
             'password' => $validatedData['loginpassword']],
             )) {
-                
                 $request->session()->regenerate();
-                
+                return redirect('/')->with('success', 'You have successfully logged in.');
         }
 
         else {
-            return "ERRO!";
+            return redirect('/')->with('failure', 'Login error.');
         }
     }
    

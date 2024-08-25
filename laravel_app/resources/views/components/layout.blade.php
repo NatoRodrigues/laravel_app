@@ -24,7 +24,8 @@
           <span class="text-white mr-2 header-chat-icon" title="Chat" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-comment"></i></span>
           <a href="#" class="mr-2"><img title="My Profile" data-toggle="tooltip" data-placement="bottom" style="width: 32px; height: 32px; border-radius: 16px" src="https://gravatar.com/avatar/f64fc44c03a8a7eb1d52502950879659?s=128" /></a>
           <a class="btn btn-sm btn-success mr-2" href="#">Create Post</a>
-          <form action="#" method="POST" class="d-inline">
+          <form action="/logout" method="POST" class="d-inline">
+            @csrf
             <button class="btn btn-sm btn-secondary">Sign Out</button>
           </form>
         </div>
@@ -51,7 +52,29 @@
       </div>
     </header>
     <!-- header ends here -->
-{{ $slot }}
+
+    @if (session()->has('success'))
+    <div class="container container--narrow">
+      <div class="alert alert-success">
+        {{ session('success') }} 
+      </div>
+
+
+    </div>
+    @if(session()->has('failure'))
+    <div class="container container--narrow">
+      <div class="alert alert-danger">
+        {{ session('failure') }} 
+      </div>
+    </div>
+
+
+    @endif
+
+    @endif
+    
+
+  {{ $slot }}
 
 
     <!-- footer begins -->
@@ -64,6 +87,10 @@
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
       <script>
         $('[data-toggle="tooltip"]').tooltip()
+        $(function(){
+          var timeout = 5000;
+          $('alert').delay(timeout).fadeOut(300);
+        });
       </script>
     </body>
   </html>
