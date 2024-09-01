@@ -39,7 +39,7 @@ class DataController extends Controller
     try {
         $user = User::create($validatedData);
         auth()->login($user);
-        return redirect('/')->with('success', 'Registro feito com sucesso.');
+        return redirect('/')->with('success', 'You have successfully registered.');
         
     } catch (Exception $exception) {
         return response()->json(['error' => $exception->getMessage()], 422);
@@ -61,8 +61,9 @@ class DataController extends Controller
                 return redirect('/')->with('success', 'You have successfully logged in.');
         }
 
-        else {
+        else{
             return redirect('/')->with('failure', 'Login error.');
+            
         }
     }
    
