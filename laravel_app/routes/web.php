@@ -4,10 +4,10 @@ use App\Http\Controllers\Data;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\Teste_Controller;
 use App\Http\Controllers\exercicio_laravel;
 use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +31,9 @@ Route::post('/logout', [DataController::class, 'logout'])->name('logout');
 // blog post related routes
 Route::get('/create-post', [PostController::class, 'ShowCreateForm']);
 Route::post('/create-post', [PostController::class, 'StoreNewPost']);
+Route::post('/create-post', [PostController::class, 'StoreNewPost']);
+Route::get('/single-post/{user}/{post}', [PostController::class, 'ShowSinglePost']);
+
 
 
 
