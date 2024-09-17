@@ -66,5 +66,16 @@ class DataController extends Controller
             
         }
     }
+
+    public function profile(User $user){
+
+        $posts = $user->posts()->get(); // <- pega o valor do relacionamento
+
+        $userPosts = $posts->where('id', auth()->id()); // pega o cuitte feito pelo usuario autenticado/logado
+
+        $postsCount = count($userPosts);
+        
+        return view('profile-posts', compact('userPosts', 'user', 'postsCount'));
+    } 
    
 }

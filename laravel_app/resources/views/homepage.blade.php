@@ -6,8 +6,8 @@
                 <div class="col-lg-7 py-3 py-md-5">
  
                     <h1>{{ __('teste.teste') }}</h1>
-                    <p>Current locale: {{ app()->getLocale() }}</p>
-                    <p>Current Session value: {{ session('locale') }}</p>
+                    {{-- <p>Current locale: {{ app()->getLocale() }}</p>
+                    <p>Current Session value: {{ session('locale') }}</p> --}}
                     <p class="lead text-muted">Are you sick of short tweets and impersonal &ldquo;shared&rdquo; posts that are reminiscent of the late 90&rsquo;s email forwards? We believe getting back to actually writing is the key to enjoying the internet again.</p>
                 </div>
                 <div class="col-lg-5 pl-lg-5 pb-3 py-lg-5">

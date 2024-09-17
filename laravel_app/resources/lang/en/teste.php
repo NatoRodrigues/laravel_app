@@ -2,7 +2,7 @@
 
 if (session('locale', 'en')) {
     return [
-        'teste' => 'Welcome to our website!',
+        'teste' => 'Welcome to KOOitter!',
     ];
     
 }

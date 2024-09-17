@@ -18,29 +18,30 @@ use App\Http\Controllers\LanguageController;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
+*/  
 
 // user related routes
-Route::get('/', [DataController::class, "ShowCorrectHomePage"]);
-Route::post('/process-data',[DataController::class, 'register'])->name('register');
-Route::post('/login',[DataController::class, 'login'])->name('login');
-Route::post('/logout', [DataController::class, 'logout'])->name('logout');
+Route::get('/', [DataController::class, "ShowCorrectHomePage"])->name('login');
+Route::post('/process-data',[DataController::class, 'register'])->name('register')->middleware('guest'); // middleware para que apenas 'convidados' (usuarios que n estão logados) sejam redirecionados para a página de registro para realizar registro
+
+Route::post('/login',[DataController::class, 'login'])->middleware('guest'); // se já estiver logado vc n poderá realizar login novamente
+
+Route::post('/logout', [DataController::class, 'logout'])->name('logout')->middleware('mustBeLoggedIn'); // passamos o nome do nosso middleware definido no Kernel.php
 
 
 
 // blog post related routes
-Route::get('/create-post', [PostController::class, 'ShowCreateForm']);
-Route::post('/create-post', [PostController::class, 'StoreNewPost']);
-Route::post('/create-post', [PostController::class, 'StoreNewPost']);
-Route::get('/single-post/{user}/{post}', [PostController::class, 'ShowSinglePost']);
+Route::get('/create-post', [PostController::class, 'ShowCreateForm'])->middleware('mustBeLoggedIn');  // passamos o nome do nosso middleware definido no Kernel.php
+Route::post('/create-post', [PostController::class, 'StoreNewPost'])->middleware('mustBeLoggedIn');   // passamos o nome do nosso middleware definido no Kernel.php
+Route::get('/single-post/{post}', [PostController::class, 'ShowSinglePost']);
+Route::delete('single-post/{post}', [PostController::class, 'delete']);
 
 
+// profile related routes
+Route::get('/profile/{user:username}', [DataController::class, 'profile'])->name('profile');
+ 
 
-
-Route::post('/condition', function () {
-    return view('condition');  
-})->name('condition');
-
+ 
 
 
 
