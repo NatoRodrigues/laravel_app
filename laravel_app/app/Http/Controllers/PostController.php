@@ -31,13 +31,8 @@ class PostController extends Controller
         return redirect("/single-post/{$newPost->user_id}/{$newPost->id}")->with('success', 'você cuittou com sucesso!!!!');
     }
 
-    public function ShowSinglePost(User $user, Post $post){
-        
-        if ($post) {
-            return view('single-post', compact('post'));
-        }
-        else{
-            return 'cu';
-        }
+    public function ShowSinglePost(User $user, Post $post)
+    { 
+        return view('single-post', compact('post'));
     }
 }
